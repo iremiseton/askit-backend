@@ -6,7 +6,7 @@ const bodyParser = require("body-parser");
 
 var app = express();
 var server = http.createServer(app);
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 5000;
 
 //Connect to db
 var mongoose = require("./db/connectToDb");
