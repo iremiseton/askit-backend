@@ -31,6 +31,11 @@ var user_schema = new Schema({
         lowercase: true,
         trim: true
     },
+    type: {
+        type: String,
+        required: true,
+        default: "normal"
+    },
     token: {
         default: null,
         type: String

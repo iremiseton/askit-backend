@@ -16,13 +16,11 @@ var post_schema = new Schema({
         trim: true
     },
     body: {
-        required: true,
         type: String,
         trim: true
     },
-    img: {
-        data: Buffer,
-        contentType: String
+    imgPath: {
+        type: String,
     },
     createdAt: {
         type: Date,
@@ -40,7 +38,28 @@ post_schema.statics.getNewestPosts = function(limit = 0) {
     return this.find().sort({createdAt: 1}).limit(limit);
 }
 
+post_schema.statics.createNewPost = function(req,
+    title,
+    body,
+    imgPath,
+    cb
+    ) {
 
+    var newPost = this({
+        owner_id: req.userData.user._id,
+        body,
+        title,
+        imgPath
+    })
+
+    newPost.save()
+        .then( (result) =>{
+            cb(undefined, result)
+        })
+        .catch( (err) => {
+            cb(err, undefined);
+        })
+}
 
 var Post = mongoose.model("Post", post_schema);
 

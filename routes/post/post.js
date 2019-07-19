@@ -33,11 +33,23 @@ router.route("/posts")
 
     .post(upload.single("file"), (req, res) => {
 
-        if (!req.file) {
-            return res.json({"error": "File was not found"});
-        }
 
-        return res.json({fileUrl: req.file.filename});
+        var body = _.pick(req.body, [
+            "title",
+            "body",
+        ]);
+
+        Post.createNewPost(req,
+            body.title, //Title
+            body.body,  //body
+            req.file.filename ? "./data/" + req.file.filename : undefined, //filename path
+            (err, result) => {
+                if (err) {
+                    return res.json({err});
+                }
+
+                return res.json({result});
+            });
     })
 
 module.exports = router;
