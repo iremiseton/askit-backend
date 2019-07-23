@@ -29,13 +29,17 @@ var post_schema = new Schema({
 });
 
 post_schema.statics.getPostById = function(_id) {
-    return this.find({_id});
+    return this.findOne({_id});
 }
 
 
 post_schema.statics.getNewestPosts = function(limit = 0) {
     if (limit == 0 || limit < 0) { return this.find().sort({createdAt: 1}) }
     return this.find().sort({createdAt: 1}).limit(limit);
+}
+
+post_schema.statics.getImageURL = function(_id) {
+    return this.findOne( { _id }, {imgPath: 1, _id: 0} );
 }
 
 post_schema.statics.createNewPost = function(req,

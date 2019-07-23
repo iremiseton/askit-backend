@@ -8,7 +8,7 @@ var upload = require("../../utils/uploadImage");
 var Post = require("../../models/Post");
 
 
-router.route("/posts")
+router.route("/")
 
     .get( (req, res) => {
 
@@ -27,12 +27,21 @@ router.route("/posts")
                         })
                         .catch( (err) => {
                             return res.json({err})
-                        })
-
+                        });
     })
+
+    /*
+        Uploading new post to database.
+    */
 
     .post(upload.single("file"), (req, res) => {
 
+
+        try {
+            var filename = "./data/" + req.file.filename;
+        } catch {
+            var filename = "undefined";
+        }
 
         var body = _.pick(req.body, [
             "title",
@@ -42,7 +51,7 @@ router.route("/posts")
         Post.createNewPost(req,
             body.title, //Title
             body.body,  //body
-            req.file.filename ? "./data/" + req.file.filename : undefined, //filename path
+            filename,
             (err, result) => {
                 if (err) {
                     return res.json({err});

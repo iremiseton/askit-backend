@@ -20,11 +20,12 @@ app.use(bodyParser.urlencoded({
 var verifyToken = require("./middleware/verifyToken");
 
 app.use("/auth", require("./routes/auth/register")); //Register user route
-app.use("/auth", require("./routes/auth/authenticate"));
+app.use("/auth", require("./routes/auth/login"));
 
-app.use("/post", verifyToken, require("./routes/post/post"));
+app.use("/p", verifyToken, require("./routes/post/posts"));
+app.use("/i", require("./routes/post/image"));
 
-app.use("/admin", require("./routes/admin/user"));
+app.use("/admin", require("./routes/admin/modifyUser"));
 
 server.listen(port, () => {
     console.log("Server is running on port: " + port);

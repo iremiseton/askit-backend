@@ -50,11 +50,19 @@ user_schema.statics.findByUsername = function(username) {
     return this.findOne({ username });
 }
 
+/*
+    callback(user, error)
+*/
 user_schema.statics.authenticate = function(
     username,
     password,
     cb
 ) {
+
+    /*
+        Searching for a user by its username
+        comparing users input (password) with password stored in database.
+    */
 
     this.findOne({username})
         .then( (user) => {
@@ -82,12 +90,23 @@ user_schema.statics.authenticate = function(
 
 }
 
+
+/*
+    callback(user, error)
+*/
 user_schema.statics.createNewUser = function(
     username,
     password,
     email,
     cb
 ) {
+
+
+    /*
+        salt and hashing password
+        creating instance of a user with password the hashed password
+        saving user and returning with a callback
+    */
 
     var salt = bcrypt.genSaltSync(10);
     var hashPassword = bcrypt.hashSync(password, salt);
