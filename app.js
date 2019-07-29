@@ -16,13 +16,29 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
+var cors = require("cors");
+
+
+var whitelist = process.env.CORSwl;
+var corsOpt = {
+    origin: function(origin, cb) {
+        if (whitelist.indexOf(origin) !== -1) {
+            cb(null, true);
+        } else {
+            cb(new Error("Not allowed by CORS"))
+        }
+    }
+}
+
+app.use(cors(corsOpt));
+
 //Middlewares
 var verifyToken = require("./middleware/verifyToken");
 
 app.use("/auth", require("./routes/auth/register")); //Register user route
 app.use("/auth", require("./routes/auth/login"));
 
-app.use("/p", verifyToken, require("./routes/post/posts"));
+app.use("/p", require("./routes/post/posts"));
 app.use("/i", require("./routes/post/image"));
 
 app.use("/admin", require("./routes/admin/modifyUser"));

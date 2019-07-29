@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 
 var verifyToken = function(req, res, next) {
 
-    const token = req.headers['authorization'];
+    const token = req.headers['authorization'] || req.body.token;
 
     if (typeof token !== "undefined") {
         //Set token to token value from header
